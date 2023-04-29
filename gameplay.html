@@ -57,13 +57,7 @@
             text-shadow: 2px 2px #0cb2ff;
             -webkit-text-stroke: 2px rgb(11, 119, 110);   
         }
-        #output {
-        font-size: 1.2rem;
-        padding: 2px;
-        margin: 20px;
-        border: 2px double black;
-        background-color:rgb(40, 96, 110);
-      }
+    
     </style> 
 </head>
 <body>
@@ -93,15 +87,22 @@
         function openpageTie() {
            window.location="tie.html";
         }
+        function  openpageUserWin(){
+            window.location="userwin.html";
+        }
+
+        function  openpageCompWin(){
+            window.location="compwin.html";
+        }
         if (userChoice === computerChoice) {
             openpageTie();
         } 
         else if ((userChoice === 'rock' && computerChoice === 'scissors') ||
                    (userChoice === 'paper' && computerChoice === 'rock') ||
                    (userChoice === 'scissors' && computerChoice === 'paper')) {
-            openpageTie();
+            openpageUserWin();
         } else {
-            openpageTie();
+            openpageCompWin();
         }
         
         }
