@@ -18,7 +18,7 @@ This project implements a simple Rock Paper Scissors game using HTML, CSS, and J
 
 ## How to Play
 
-1. Open `index.html` in your web browser.
+1. Open [the hosted game](https://sherryzia.github.io/rps.github.io/) in your web browser.
 2. Click on the "Start" button to begin the game.
 3. On the `gameplay.html` page, choose your move (rock, paper, or scissors) by clicking the respective button.
 4. Based on your choice and the computer's move, you'll be redirected to either `userwin.html`, `compwin.html`, or `tie.html`.
