@@ -1,59 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Rock Paper Scissor</title>
-<link rel="stylesheet" href="home.css">    
-<style>
-    
-    body{
-            background-image: url("bg.jpg");
-            background-repeat: no-repeat;
-            background-size:cover;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+        :root {
+            --primary-color: #ff3e6c;
+            --secondary-color: #6c5ce7;
+            --accent-color: #00b894;
+            --light-color: #f5f6fa;
+            --dark-color: #2d3436;
         }
-        #buttonmain{
-            height: 70px;
-            width: 150px;
-            font-size: large;
-            border-radius: 20pc;
-            background-color: rgb(255, 0, 76);
-            color: rgb(255, 255, 255);
-            font-size:24px;
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 600px;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            color: var(--light-color);
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            animation: glow 2s infinite alternate;
+            -webkit-text-stroke: 1px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+        
+        @keyframes glow {
+            from { 
+                text-shadow: 0 0 3px #fff;
+                filter: drop-shadow(0 0 2px var(--primary-color));
+            }
+            to { 
+                text-shadow: 0 0 5px #fff;
+                filter: drop-shadow(0 0 5px var(--secondary-color));
+            }
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin: 1rem;
+            font-size: 1.2rem;
             font-weight: bold;
+            color: var(--light-color);
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        #buttonmain:hover {
-            background-color:greenyellow;
-            color: black;
+        
+        .btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
-        #div01{
-            width: 50%;
-                height: 50%;
-                margin: auto;
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
+        
+        .options {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
         }
-        #head{
-            color: azure;
-            font-family: 'Samurai Blast', sans-serif;
-            font-size: 100px; 
-            margin-bottom: 20px;    
+        
+        .option-btn {
+            margin: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: transparent;
+            border: 2px solid var(--light-color);
+            color: var(--light-color);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-</style>
+        
+        .option-btn:hover {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .option-btn.active {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .difficulty-text {
+            color: var(--light-color);
+            margin-top: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        footer {
+            position: absolute;
+            bottom: 1rem;
+            color: var(--light-color);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+    </style>
 </head>
 <body>
-    <center>
-    <div id="div01">
-    <h1 id="head">Rock Paper Scissor</h1>
-    <button id="buttonmain" onclick="openpage()"> Start</button>
+    <div class="container">
+        <h1>Rock Paper Scissors</h1>
+        
+        <div class="options">
+            <p class="difficulty-text">Select Game Mode:</p>
+        </div>
+        <div class="options">
+            <button class="option-btn active" id="easy-mode">Classic</button>
+            <button class="option-btn" id="medium-mode">Best of 5</button>
+            <button class="option-btn" id="hard-mode">Time Challenge</button>
+        </div>
+        
+        <button class="btn" id="start-btn" onclick="openGameplay()">Start Game</button>
     </div>
     
-    </center>
-<script>
-    function openpage() {
-    window.location="gameplay.html";
-}
-</script>
+    <footer>Created by Shaheer Zia Qazi | 2022</footer>
+
+    <script>
+        // Get all option buttons
+        const optionBtns = document.querySelectorAll('.option-btn');
+        let gameMode = 'classic';
+        
+        // Add click event to each option button
+        optionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                optionBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                // Set game mode based on button id
+                if (btn.id === 'easy-mode') {
+                    gameMode = 'classic';
+                } else if (btn.id === 'medium-mode') {
+                    gameMode = 'best-of-5';
+                } else if (btn.id === 'hard-mode') {
+                    gameMode = 'time-challenge';
+                }
+                
+                // Store game mode in local storage
+                localStorage.setItem('gameMode', gameMode);
+            });
+        });
+        
+        function openGameplay() {
+            window.location = "gameplay.html";
+        }
+    </script>
 </body>
 </html>

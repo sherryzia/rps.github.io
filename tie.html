@@ -1,50 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>It's a Draw!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-    
-        body{
-                background-image: url("DRAW.jpg");
-                background-repeat: no-repeat;
-                background-size:cover;
-            }
-            #buttonmain{
-            height: 70px;
-            width: 150px;
-            font-size: large;
-            border-radius: 20pc;
-            background-color: rgb(255, 0, 76);
-            color: rgb(255, 255, 255);
-            font-size:24px;
-            font-weight: bold;
-            position: absolute;
-            bottom: 30px;
-            margin-bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-    }
-        
-        #buttonmain:hover {
-            background-color:greenyellow;
-            color: black;
+        :root {
+            --primary-color: #ff3e6c;
+            --secondary-color: #6c5ce7;
+            --accent-color: #00b894;
+            --light-color: #f5f6fa;
+            --dark-color: #2d3436;
+            --draw-color: #f39c12;
         }
-        </style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f39c12, #9b59b6);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .result-container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            max-width: 600px;
+            width: 80%;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        .result-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            color: var(--draw-color);
+            animation: pulse 2s infinite;
+        }
+        
+        .result-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--light-color);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .result-message {
+            font-size: 1.5rem;
+            color: var(--light-color);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            margin: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--light-color);
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
-    <center>
-    <div id="div01">
-    <button id="buttonmain" onclick="openpage()"> Try Again?</button>
+    <div class="result-container">
+        <div class="result-icon">
+            <i class="fas fa-handshake"></i>
+        </div>
+        <h1 class="result-title">It's a Draw!</h1>
+        <p class="result-message">Great minds think alike! You and the computer chose the same option.</p>
+        <a href="gameplay.html" class="btn">Play Again</a>
+        <a href="index.html" class="btn">Home</a>
     </div>
-    
-    </center>
-<script>
-    function openpage() {
-    window.location="gameplay.html";
-    }
 
-</script>
+    <script>
+        // Add some animation when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.result-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(-20px)';
+            
+            setTimeout(() => {
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+                container.style.transition = 'all 0.5s ease-in-out';
+            }, 100);
+        });
+    </script>
 </body>
 </html>

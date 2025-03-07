@@ -1,112 +1,599 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Rock Paper Scissor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors - Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        
-        body{
-            background-image: url("bg.jpg");
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position-x: center;
+        :root {
+            --primary-color: #ff3e6c;
+            --secondary-color: #6c5ce7;
+            --accent-color: #00b894;
+            --light-color: #f5f6fa;
+            --dark-color: #2d3436;
+            --winner-color: #2ecc71;
+            --loser-color: #e74c3c;
+            --draw-color: #f39c12;
         }
-      
-        #div01{
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 2rem;
+        }
+        
+        .title {
+            color: var(--light-color);
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .score-container {
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 0.5rem 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .score {
+            padding: 0.5rem 1rem;
+            text-align: center;
+        }
+        
+        .score h3 {
+            color: var(--light-color);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .score p {
+            color: var(--light-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+        }
+        
+        .hands {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin: 2rem 0;
+        }
+        
+        .hand {
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .hand-title {
+            color: var(--light-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .hand-icon {
+            font-size: 5rem;
+            color: var(--light-color);
+            background-color: rgba(0, 0, 0, 0.2);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100%;
-            margin: auto;
-         }
-        #head{
-            color: azure;
-            font-family: 'Samurai Blast', sans-serif;
-            font-size: 50px; 
-            margin-bottom: 18px;    
-            margin-top: 150px;
-            text-shadow: 2px 2px #ff0000;
-            -webkit-text-stroke: 1px red;        
+            margin: 0 auto;
+            transition: all 0.3s ease;
         }
-        table,th,td{
-            padding: 0px;
-            color: white;
+        
+        .hand-icon.shake {
+            animation: shake 0.5s ease-in-out;
         }
-        th{
-            margin-bottom: 300px;
+        
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            20%, 60% { transform: rotate(15deg); }
+            40%, 80% { transform: rotate(-15deg); }
         }
-        button{
-            height: 70px;
-            width: 150px;
-            font-size: large;
-            border-radius: 20pc;
-            background-color: rgb(255, 0, 76);
-            color: rgb(255, 255, 255);
-            font-size:24px;
+        
+        .vs {
+            font-size: 2rem;
+            color: var(--light-color);
+            margin: 2rem 0;
             font-weight: bold;
         }
-        button:hover {
-            background-color:greenyellow;
-            color: black;
+        
+        .options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
         }
-        #choose{
-            color: azure;
-            font-family: 'Samurai Blast', sans-serif;
-            font-size: 50px; 
-            margin-bottom: 25px;    
-            margin-top: 0px;
-            text-shadow: 2px 2px #0cb2ff;
-            -webkit-text-stroke: 2px rgb(11, 119, 110);   
+        
+        .option {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 2rem;
+            color: var(--light-color);
         }
-    
-    </style> 
+        
+        .option:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .result {
+            margin-top: 2rem;
+            color: var(--light-color);
+            font-size: 1.5rem;
+            font-weight: bold;
+            height: 2rem;
+        }
+        
+        .round-info {
+            margin-top: 1rem;
+            color: var(--light-color);
+            font-size: 1rem;
+        }
+        
+        .timer {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--light-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .action-btns {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--light-color);
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .winner {
+            background-color: var(--winner-color);
+            transform: scale(1.1);
+        }
+        
+        .loser {
+            background-color: var(--loser-color);
+            opacity: 0.7;
+        }
+        
+        .draw {
+            background-color: var(--draw-color);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            background-color: var(--light-color);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-title {
+            font-size: 2rem;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+        
+        .modal-body {
+            margin-bottom: 2rem;
+            color: var(--dark-color);
+        }
+        
+        .modal-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            margin: 0 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .hand-icon {
+                font-size: 3rem;
+                width: 80px;
+                height: 80px;
+            }
+            
+            .option {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .action-btns {
+                flex-direction: column;
+            }
+        }
+
+        /* Animation Effects */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
-    
-    <center>
-    <h1 id="head" >Rock Paper Scissor</h1>
-   
-    <div id="div01" style="padding: 40px;">
-  
-        <img src="player.png" alt="Image Unavailable" height="300px"></td>
-          
+    <div class="header">
+        <h1 class="title">Rock Paper Scissors</h1>
+        <div class="score-container">
+            <div class="score">
+                <h3>You</h3>
+                <p id="user-score">0</p>
+            </div>
+            <div class="score">
+                <h3>Computer</h3>
+                <p id="computer-score">0</p>
+            </div>
+        </div>
     </div>
-    <h1 id="choose"">Choose</h1>
-    <button onclick="playGame('rock')">Rock</button>
-    <button onclick="playGame('paper')">Paper</button>
-    <button onclick="playGame('scissors')">Scissors</button>
-    <div id="output"></div>
-    </center>
-<script>
-      function playGame(userChoice) {
-        // generate a random computer choice
-        const choices = ['rock', 'paper', 'scissors'];
-        const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+    
+    <div class="game-container">
+        <div class="hands">
+            <div class="hand">
+                <h3 class="hand-title">Your Choice</h3>
+                <div class="hand-icon" id="user-hand">
+                    <i class="fas fa-question"></i>
+                </div>
+            </div>
+            
+            <div class="hand">
+                <h3 class="hand-title">Computer's Choice</h3>
+                <div class="hand-icon" id="computer-hand">
+                    <i class="fas fa-question"></i>
+                </div>
+            </div>
+        </div>
         
-        // determine the winner
-        let result;
-        function openpageTie() {
-           window.location="tie.html";
-        }
-        function  openpageUserWin(){
-            window.location="userwin.html";
-        }
+        <div class="result" id="result-text"></div>
+        <div class="round-info" id="round-info"></div>
+        <div class="timer" id="timer">10</div>
+        
+        <div class="options">
+            <div class="option" onclick="playGame('rock')">
+                <i class="fas fa-hand-rock"></i>
+            </div>
+            <div class="option" onclick="playGame('paper')">
+                <i class="fas fa-hand-paper"></i>
+            </div>
+            <div class="option" onclick="playGame('scissors')">
+                <i class="fas fa-hand-scissors"></i>
+            </div>
+        </div>
+        
+        <div class="action-btns">
+            <button class="btn" onclick="resetGame()">Reset</button>
+            <button class="btn" onclick="window.location='index.html'">Home</button>
+        </div>
+    </div>
+    
+    <!-- Result Modal -->
+    <div class="modal" id="result-modal">
+        <div class="modal-content">
+            <h2 class="modal-title" id="modal-title">Game Over</h2>
+            <div class="modal-body" id="modal-body">
+                You won the game!
+            </div>
+            <button class="btn modal-btn" onclick="resetGame()">Play Again</button>
+            <button class="btn modal-btn" onclick="window.location='index.html'">Home</button>
+        </div>
+    </div>
 
-        function  openpageCompWin(){
-            window.location="compwin.html";
-        }
-        if (userChoice === computerChoice) {
-            openpageTie();
-        } 
-        else if ((userChoice === 'rock' && computerChoice === 'scissors') ||
-                   (userChoice === 'paper' && computerChoice === 'rock') ||
-                   (userChoice === 'scissors' && computerChoice === 'paper')) {
-            openpageUserWin();
-        } else {
-            openpageCompWin();
+    <script>
+        // Game variables
+        let userScore = 0;
+        let computerScore = 0;
+        let round = 0;
+        let maxRounds = 1;
+        let gameMode = localStorage.getItem('gameMode') || 'classic';
+        let timeLeft = 10;
+        let timerInterval;
+        
+        // Initialize the game
+        function initGame() {
+            // Set game mode options
+            if (gameMode === 'best-of-5') {
+                maxRounds = 5;
+                document.getElementById('round-info').textContent = `Round: 1/${maxRounds}`;
+                document.getElementById('round-info').style.display = 'block';
+            } else if (gameMode === 'time-challenge') {
+                document.getElementById('timer').style.display = 'block';
+                startTimer();
+            }
         }
         
+        function startTimer() {
+            timeLeft = 30;
+            document.getElementById('timer').textContent = timeLeft;
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endGame("Time's up!");
+                }
+            }, 1000);
         }
+        
+        function playGame(userChoice) {
+            // Increment round counter for best-of-5 mode
+            if (gameMode === 'best-of-5') {
+                round++;
+                document.getElementById('round-info').textContent = `Round: ${round}/${maxRounds}`;
+            }
+            
+            // Generate a random computer choice
+            const choices = ['rock', 'paper', 'scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+            
+            // Update hand icons with animation
+            updateHands(userChoice, computerChoice);
+            
+            // Determine the winner
+            setTimeout(() => {
+                const result = determineWinner(userChoice, computerChoice);
+                updateScore(result);
+                displayResult(result, userChoice, computerChoice);
+                
+                // Check if the game is over
+                if (gameMode === 'best-of-5' && round >= maxRounds) {
+                    setTimeout(() => {
+                        endGame("Game Over");
+                    }, 1000);
+                }
+            }, 700); // Delay to match the animation
+        }
+        
+        function updateHands(userChoice, computerChoice) {
+            const userHand = document.getElementById('user-hand');
+            const computerHand = document.getElementById('computer-hand');
+            
+            // Add shake animation
+            userHand.classList.add('shake');
+            computerHand.classList.add('shake');
+            
+            // Update icons after animation ends
+            setTimeout(() => {
+                userHand.classList.remove('shake');
+                computerHand.classList.remove('shake');
+                
+                // Update user hand icon
+                userHand.innerHTML = getHandIcon(userChoice);
+                
+                // Update computer hand icon
+                computerHand.innerHTML = getHandIcon(computerChoice);
+            }, 500);
+        }
+        
+        function getHandIcon(choice) {
+            if (choice === 'rock') {
+                return '<i class="fas fa-hand-rock"></i>';
+            } else if (choice === 'paper') {
+                return '<i class="fas fa-hand-paper"></i>';
+            } else {
+                return '<i class="fas fa-hand-scissors"></i>';
+            }
+        }
+        
+        function determineWinner(userChoice, computerChoice) {
+            if (userChoice === computerChoice) {
+                return 'draw';
+            } else if (
+                (userChoice === 'rock' && computerChoice === 'scissors') ||
+                (userChoice === 'paper' && computerChoice === 'rock') ||
+                (userChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                return 'win';
+            } else {
+                return 'lose';
+            }
+        }
+        
+        function updateScore(result) {
+            if (result === 'win') {
+                userScore++;
+                document.getElementById('user-score').textContent = userScore;
+            } else if (result === 'lose') {
+                computerScore++;
+                document.getElementById('computer-score').textContent = computerScore;
+            }
+        }
+        
+        function displayResult(result, userChoice, computerChoice) {
+            const resultText = document.getElementById('result-text');
+            const userHand = document.getElementById('user-hand');
+            const computerHand = document.getElementById('computer-hand');
+            
+            // Reset hand classes
+            userHand.classList.remove('winner', 'loser', 'draw');
+            computerHand.classList.remove('winner', 'loser', 'draw');
+            
+            // Display result and set appropriate classes
+            if (result === 'win') {
+                resultText.textContent = `You win! ${capitalizeFirstLetter(userChoice)} beats ${computerChoice}`;
+                userHand.classList.add('winner');
+                computerHand.classList.add('loser');
+            } else if (result === 'lose') {
+                resultText.textContent = `You lose! ${capitalizeFirstLetter(computerChoice)} beats ${userChoice}`;
+                userHand.classList.add('loser');
+                computerHand.classList.add('winner');
+            } else {
+                resultText.textContent = "It's a draw!";
+                userHand.classList.add('draw');
+                computerHand.classList.add('draw');
+            }
+        }
+        
+        function endGame(title) {
+            if (gameMode === 'time-challenge') {
+                clearInterval(timerInterval);
+            }
+            
+            const modal = document.getElementById('result-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            
+            modalTitle.textContent = title;
+            
+            if (userScore > computerScore) {
+                modalBody.textContent = `Congratulations! You won ${userScore}-${computerScore}`;
+            } else if (userScore < computerScore) {
+                modalBody.textContent = `You lost ${userScore}-${computerScore}. Better luck next time!`;
+            } else {
+                modalBody.textContent = `It's a tie ${userScore}-${computerScore}!`;
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        function resetGame() {
+            // Reset scores
+            userScore = 0;
+            computerScore = 0;
+            round = 0;
+            
+            // Update display
+            document.getElementById('user-score').textContent = '0';
+            document.getElementById('computer-score').textContent = '0';
+            document.getElementById('result-text').textContent = '';
+            
+            if (gameMode === 'best-of-5') {
+                document.getElementById('round-info').textContent = `Round: 1/${maxRounds}`;
+            }
+            
+            // Reset hands
+            document.getElementById('user-hand').innerHTML = '<i class="fas fa-question"></i>';
+            document.getElementById('computer-hand').innerHTML = '<i class="fas fa-question"></i>';
+            
+            // Remove any classes from hands
+            document.getElementById('user-hand').classList.remove('winner', 'loser', 'draw');
+            document.getElementById('computer-hand').classList.remove('winner', 'loser', 'draw');
+            
+            // Hide modal
+            document.getElementById('result-modal').classList.remove('show');
+            
+            // Restart timer if in time challenge mode
+            if (gameMode === 'time-challenge') {
+                clearInterval(timerInterval);
+                startTimer();
+            }
+        }
+        
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+        
+        // Initialize the game
+        window.onload = initGame;
     </script>
-
 </body>
 </html>
